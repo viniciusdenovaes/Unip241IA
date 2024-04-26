@@ -1,22 +1,34 @@
 package solver;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import entity.Estado;
-import estruturas.EstadosAbertos;
+import entity.Tabuleiro;
+import entity.estruturas.EstadoAbertos;
+import entity.estruturas.Fila;
 
-public class BuscaEspaco {
+public class EspacoDeEstados {
 	
+	 public static final Estado OBJETIVO = new Estado(
+			 new Tabuleiro(
+					 new int[][]{
+						 {1,2,3},
+						 {8,0,4},
+						 {7,6,5}
+						 }
+					 ));
+	 
 	 Estado inicial;
-	 EstadosAbertos estadosAbertos;
+	 EstadoAbertos estadosAbertos;
+	 Set<Estado> estadosFechados;
 	 
 	 
-	 public BuscaEspaco(Estado aInicial, EstadosAbertos ea) {
+	 public EspacoDeEstados(Estado aInicial, EstadoAbertos aEstruturaAbertos) {
 		 this.inicial = aInicial;
-		 this.estadosAbertos = ea;
+		 this.estadosAbertos = aEstruturaAbertos;
 		 estadosAbertos.push(this.inicial);
+		 estadosFechados = new HashSet<>();
 		 
 	}
 	 
@@ -31,10 +43,10 @@ public class BuscaEspaco {
 				 System.out.println(e);
 				 return e;
 			 }
-//			 estadosFechados.add(e);
+			 estadosFechados.add(e);
 			 Collection<Estado> filhos = e.geraFilhos();
 			 for(Estado filho: filhos) {
-//				 if(!estadosFechados.contains(filho))
+				 if(!estadosFechados.contains(filho))
 					 estadosAbertos.push(filho);
 			 }
 		 }
@@ -42,7 +54,6 @@ public class BuscaEspaco {
 		 System.out.println("nao encontrou solucao");
 		 
 		 return null;
-		 
 	 }
 
 }
